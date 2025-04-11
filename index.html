@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>プラ寿司</title>
+  <!-- ファビコンを設定（PNG形式でもOK） -->
+  <link rel="icon" type="image/png" href="imgs/renren_ill.png">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+JP:wght@400;700&display=swap" 
+    rel="stylesheet"
+  >
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* 全体のフォント設定 */
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      border: 10px solid #FF9B00;
+      background-color: #FF9B00;
+    }
+
+    /* ヘッダー */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #FFA94D;
+    }
+    header .logo {
+    font-family: 'Fredoka One', sans-serif;
+    color: white;
+    font-size: 1.8rem;
+    display: flex;          /* アイコンとテキストを横並びに */
+    align-items: center;    /* 縦方向の中央揃え */
+    gap: 0.5rem;            /* アイコンと文字の間の隙間 */
+    }
+
+    .logo-icon {
+    width: 40px;  /* お好みのサイズ */
+    height: auto;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #FFD93D;
+    }
+
+    /* ヒーローセクション */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 90vh;
+      text-align: center;
+      padding: 2rem;
+      background-color: #69C9E2;
+      overflow: hidden;
+    }
+
+    /* 飾り用の絶対配置画像 */
+    .hero img.hero-image {
+      position: absolute;
+      width: auto;
+      height: auto;
+      z-index: 1;
+    }
+    .hero-image1 {
+      max-width: 180px;
+      top: 10%;
+      left: 5%;
+      animation: tilt 6s ease-in-out infinite;
+    }
+    .hero-image2 {
+      max-width: 200px;
+      bottom: 5%;
+      right: 10%;
+      animation: tilt 8s ease-in-out infinite;
+    }
+
+    /* メイン画像 */
+    .main-center-image {
+      max-width: 400px;
+      width: 80%;
+      height: auto;
+      margin: 1rem auto;
+      display: block;
+      transform-origin: center center;
+      animation: tilt 6s ease-in-out infinite;
+    }
+
+    /* 上下テキスト */
+    .hero h1 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 3rem;
+      color: #FF6C00;
+      margin-bottom: 1rem;
+      z-index: 10;
+    }
+    .hero p {
+      font-size: 1.4rem;
+      margin: 1rem 0 2rem;
+      color: #fff;
+      z-index: 10;
+    }
+    .hero button {
+      background-color: #FFF17C;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+      z-index: 10;
+    }
+    .hero button:hover {
+      background-color: #ffe400;
+      transform: scale(1.05);
+    }
+
+    /* -------------------------
+       それぞれ異なるコーナーからスタートする
+       寿司アニメ4種
+     ------------------------- */
+
+    /* 基本設定 */
+    .sushi-run {
+      position: absolute;
+      width: 80px;
+      height: auto;
+      z-index: 2;
+    }
+
+    /*
+      サーモン (左上 => 右上 => 右下 => 左下 => 左上)
+    */
+    .sushi-run-tl {
+      animation: cornerRunTL 40s linear infinite;
+    }
+    @keyframes cornerRunTL {
+      0%   { top: 0; left: 0; }
+      25%  { top: 0; left: calc(100% - 80px); }
+      50%  { top: calc(100% - 80px); left: calc(100% - 80px); }
+      75%  { top: calc(100% - 80px); left: 0; }
+      100% { top: 0; left: 0; }
+    }
+
+    /*
+      たまご (右上 => 右下 => 左下 => 左上 => 右上)
+    */
+    .sushi-run-tr {
+      animation: cornerRunTR 40s linear infinite;
+    }
+    @keyframes cornerRunTR {
+      0%   { top: 0; left: calc(100% - 80px); }
+      25%  { top: calc(100% - 80px); left: calc(100% - 80px); }
+      50%  { top: calc(100% - 80px); left: 0; }
+      75%  { top: 0; left: 0; }
+      100% { top: 0; left: calc(100% - 80px); }
+    }
+
+    /*
+      えび (左下 => 左上 => 右上 => 右下 => 左下)
+    */
+    .sushi-run-bl {
+      animation: cornerRunBL 40s linear infinite;
+    }
+    @keyframes cornerRunBL {
+      0%   { top: calc(100% - 80px); left: 0; }
+      25%  { top: 0; left: 0; }
+      50%  { top: 0; left: calc(100% - 80px); }
+      75%  { top: calc(100% - 80px); left: calc(100% - 80px); }
+      100% { top: calc(100% - 80px); left: 0; }
+    }
+
+    /*
+      ★ いくら (右下 => 左下 => 左上 => 右上 => 右下)
+    */
+    .sushi-run-br {
+      animation: cornerRunBR 40s linear infinite;
+    }
+    @keyframes cornerRunBR {
+      0%   { top: calc(100% - 80px); left: calc(100% - 80px); }
+      25%  { top: calc(100% - 80px); left: 0; }
+      50%  { top: 0; left: 0; }
+      75%  { top: 0; left: calc(100% - 80px); }
+      100% { top: calc(100% - 80px); left: calc(100% - 80px); }
+    }
+
+    /* 画像の左右ゆらゆらアニメ */
+    @keyframes tilt {
+      0%   { transform: rotate(0deg); }
+      20%  { transform: rotate(-5deg); }
+      40%  { transform: rotate(5deg); }
+      60%  { transform: rotate(-5deg); }
+      80%  { transform: rotate(5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* サービスセクション以下は元の通り */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+      background-color: #fff8e1;
+    }
+    .service-card {
+      flex: 1 1 calc(33.333% - 2rem);
+      min-width: 250px;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+      background-color: #FFE59B;
+    }
+    .service-card {
+    transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+    transform: translateY(-5px); /* カード全体を上に浮かせる */
+    }
+
+    .service-card img {
+    /* 初期状態では静止：動きが欲しい場合の準備として transform-origin を指定 */
+    transform-origin: center center;
+    transition: transform 0.3s ease; /* ホバーでスムーズに変化 */
+    }
+
+    .service-card:hover img {
+    /* ホバー中、0.5秒かけて wiggle アニメを再生 */
+    animation: wiggle 0.5s ease forwards;
+    transform: translateY(-5px);
+    }
+
+    @keyframes wiggle {
+    0%   { transform: rotate(0deg); }
+    20%  { transform: rotate(-5deg); }
+    40%  { transform: rotate(5deg); }
+    60%  { transform: rotate(-5deg); }
+    80%  { transform: rotate(5deg); }
+    100% { transform: rotate(0deg); }
+    }
+
+
+    .service-card img {
+      max-width: 100px;
+      margin-bottom: 1rem;
+    }
+    .service-card h3 {
+      font-family: 'Fredoka One', sans-serif;
+      margin-bottom: 0.5rem;
+      color: #FF6C00;
+    }
+    .service-card p {
+      color: #555;
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: 3rem 2rem;
+      background-color: #FFE59B;
+      color: #333;
+    }
+    .cta-section h2 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #FF6C00;
+    }
+    .cta-section p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .cta-section a.button {
+      display: inline-block;
+      background-color: #FF9B00;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .cta-section a.button:hover {
+      background-color: #ff6b6b;
+    }
+
+    footer {
+      background-color: #FFA94D;
+      text-align: center;
+      padding: 1rem;
+      color: #fff;
+    }
+    footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    footer .social-links a {
+      color: #fff;
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+    footer .social-links a:hover {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo">
+        <img src="imgs/renren_ill.png" alt="ロゴ画像" class="logo-icon">
+        Plazushi
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#cta">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ヒーローセクション -->
+  <section class="hero" id="hero">
+    
+    <!-- 飾り用画像 -->
+    <img src="imgs/pc_ill.png" alt="飾り画像1" class="hero-image hero-image1">
+    <img src="imgs/renren_ill.png" alt="飾り画像2" class="hero-image hero-image2">
+
+    <!-- サーモン：左上スタート -->
+    <img src="imgs/sa-mon.png" alt="サーモン" class="sushi-run sushi-run-tl">
+
+    <!-- たまご：右上スタート -->
+    <img src="imgs/tamago.png" alt="たまご" class="sushi-run sushi-run-tr">
+
+    <!-- えび：左下スタート -->
+    <img src="imgs/ebi.png" alt="えび" class="sushi-run sushi-run-bl">
+
+    <!-- ★ いくら：右下スタート -->
+    <img src="imgs/ikura.png" alt="いくら" class="sushi-run sushi-run-br">
+
+    <!-- 見出しなど -->
+    <h1>Welcome to Plazushi World!</h1>
+    <img src="imgs/train.png" alt="中央の画像" class="main-center-image">
+    <p style="font-family: 'Fredoka One', sans-serif; color: #FF6C00;">
+      All aboard the Sushi Express!
+    </p>
+    <button onclick="alert('ポチッとありがとうございます！')">今すぐチェック</button>
+  </section>
+
+  <!-- サービス紹介セクション -->
+  <section class="services" id="services">
+    <div class="service-card">
+      <img src="imgs/renren_ill.png" alt="サービス1">
+      <h3>プラ寿司とは？</h3>
+      <p>レールの上をお寿司が走る！<br>
+        子ども心と未来技術が握った<br>
+        新時代の“創作寿司”</p>
+    </div>
+    <div class="service-card">
+      <img src="imgs/student.png" alt="サービス2">
+      <h3>開発チーム</h3>
+      <p>作ってるのは中高生！<br>
+        プログラムとシャリを手のひらで転がす青春の寿司職人たち</p>
+    </div>
+    <div class="service-card">
+      <img src="imgs/rengeji.png" alt="サービス3">
+      <h3>プラ寿司ラボ</h3>
+      <p>会場はまさかのお寺さん！<br>
+        寿司、静寂を滑走中<br>
+        畳の上を走るテクノロジーに仏も二度見</p>
+    </div>
+  </section>
+
+  <!-- CTAセクション -->
+  <section class="cta-section" id="cta">
+    <h2>Let's Make a Pop & Bright World Together!</h2>
+    <p>お問い合わせ・ご相談はこちらからお気軽に</p>
+    <a class="button" href="mailto:info@example.com">メールでお問い合わせ</a>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <div class="social-links">
+      <a href="https://twitter.com/" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://facebook.com/" target="_blank" rel="noopener">Facebook</a>
+    </div>
+    <p>&copy; 2025 Plazushi. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
